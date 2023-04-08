@@ -1,1 +1,3 @@
-export default function PracticalExp() {}
+export default function PracticalExp() {
+  return <section></section>;
+}
