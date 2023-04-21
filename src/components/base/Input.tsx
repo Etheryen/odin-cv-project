@@ -5,6 +5,7 @@ interface InputProps {
   id: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
 }
 
 export default function Input(props: InputProps) {

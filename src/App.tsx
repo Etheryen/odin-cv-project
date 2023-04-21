@@ -5,11 +5,13 @@ import PracticalExp from './components/PracticalExp';
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-800 px-[20vw] text-white">
+    <div className="min-h-screen bg-gray-800 px-[20vw] pb-10 text-white">
       <Header />
-      <GeneralInfo />
-      <Education />
-      <PracticalExp />
+      <div className="flex flex-col gap-10">
+        <GeneralInfo />
+        <Education />
+        <PracticalExp />
+      </div>
     </div>
   );
 }

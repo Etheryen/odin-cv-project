@@ -26,7 +26,7 @@ export default function GeneralInfo() {
         <>
           <form
             onSubmit={handleSave}
-            id="editForm"
+            id="infoEditForm"
             className="grid w-fit items-center gap-3 sm:grid-cols-[auto_1fr]"
           >
             <Label htmlFor="name">Name</Label>
@@ -52,8 +52,8 @@ export default function GeneralInfo() {
             />
           </form>
           <button
-            key={'save'}
-            form="editForm"
+            key={'saveInfo'}
+            form="infoEditForm"
             className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
           >
             Save
@@ -62,12 +62,12 @@ export default function GeneralInfo() {
       ) : (
         <>
           <div>
-            <div className="text-2xl font-bold italic">{name}</div>
-            <div>{email}</div>
-            <div className="font-mono">{phone}</div>
+            {name && <div className="text-2xl font-bold italic">{name}</div>}
+            {email && <div>{email}</div>}
+            {phone && <div className="font-mono">{phone}</div>}
           </div>
           <button
-            key={'edit'}
+            key={'editInfo'}
             onClick={handleEdit}
             className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
           >
