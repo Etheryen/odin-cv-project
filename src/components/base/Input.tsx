@@ -12,9 +12,11 @@ interface InputProps {
 
 export default function Input(props: InputProps) {
   const { isTask: _, handleInputKeyPress: __, ...propsToPass } = props;
+  const autoFocusElements = ['name', 'schoolName', 'companyName', 'mainTask'];
 
   return (
     <input
+      autoFocus={autoFocusElements.includes(props.id)}
       onKeyDown={props.handleInputKeyPress}
       {...propsToPass}
       className={`focus:outline-solid rounded bg-gray-700 px-2 py-1 text-white focus:outline focus:outline-2 focus:outline-cyan-500 ${
