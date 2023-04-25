@@ -2,4 +2,4 @@
 
 ## TODO
 
-- [ ] Adding sections and tasks focuses cursor
+- [ ] Adding sections and tasks focuses cursor (by data-id)
