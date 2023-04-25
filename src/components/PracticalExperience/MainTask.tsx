@@ -32,7 +32,7 @@ export default function MainTask({
         value={task.data}
         onChange={(e) => setMainTask(companyId, task.id, e.target.value)}
         type="text"
-        id="positionTitle"
+        id="mainTask"
         isTask={true}
         handleInputKeyPress={handleInputKeyPress}
       />
