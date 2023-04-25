@@ -1,5 +1,3 @@
 # odin-cv-project
 
-## TODO
-
-- [ ] Adding sections and tasks focuses cursor (by data-id)
+A CV-Application creator app made in React with TypeScript using Vite.
