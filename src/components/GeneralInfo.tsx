@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Input from './base/Input';
 import Label from './base/Label';
 
-export default function GeneralInfo() {
+export default function GeneralInfo(props: { isDisplayMode: boolean }) {
   const [isEdited, setIsEdited] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -66,13 +66,15 @@ export default function GeneralInfo() {
             {email && <div>{email}</div>}
             {phone && <div className="font-mono">{phone}</div>}
           </div>
-          <button
-            key={'editInfo'}
-            onClick={handleEdit}
-            className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
-          >
-            Edit
-          </button>
+          {!props.isDisplayMode && (
+            <button
+              key={'editInfo'}
+              onClick={handleEdit}
+              className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
+            >
+              Edit
+            </button>
+          )}
         </>
       )}
     </section>

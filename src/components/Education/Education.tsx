@@ -10,7 +10,7 @@ interface School {
   ongoing: boolean;
 }
 
-export default function Education() {
+export default function Education(props: { isDisplayMode: boolean }) {
   const [currentId, setCurrentId] = useState(1);
   const [schools, setSchools] = useState<School[]>([]);
 
@@ -62,20 +62,33 @@ export default function Education() {
     setCurrentId(currentId + 1);
   }
 
+  const shouldDisplay = !props.isDisplayMode || schools.length > 0;
+
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-2xl font-bold underline decoration-cyan-500">
-        Education
-      </h2>
-      {schools.map((school) => (
-        <EducationForm key={school.id} school={school} setters={setters} />
-      ))}
-      <button
-        onClick={handleSchoolAdd}
-        className="w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600"
-      >
-        + Add{schools.length > 0 && ' another'}
-      </button>
-    </section>
+    <>
+      {shouldDisplay && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-2xl font-bold underline decoration-cyan-500">
+            Education
+          </h2>
+          {schools.map((school) => (
+            <EducationForm
+              key={school.id}
+              school={school}
+              setters={setters}
+              isDisplayMode={props.isDisplayMode}
+            />
+          ))}
+          {!props.isDisplayMode && (
+            <button
+              onClick={handleSchoolAdd}
+              className="w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600"
+            >
+              + Add{schools.length > 0 && ' another'}
+            </button>
+          )}
+        </section>
+      )}
+    </>
   );
 }

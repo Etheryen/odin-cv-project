@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Checkbox from './base/Checkbox';
-import Input from './base/Input';
-import Label from './base/Label';
+import Checkbox from '../base/Checkbox';
+import Input from '../base/Input';
+import Label from '../base/Label';
 import MainTask from './MainTask';
 
 interface Company {
@@ -32,14 +32,27 @@ interface Setters {
 type Props = {
   company: Company;
   setters: Setters;
+  isDisplayMode: boolean;
 };
 
-export default function PracticalExpForm({ company, setters }: Props) {
+export default function PracticalExpForm({
+  company,
+  setters,
+  isDisplayMode,
+}: Props) {
   const [isEdited, setIsEdited] = useState(true);
 
   function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsEdited(false);
+
+    const emptyTasksIds = [];
+    for (const task of company.mainTasks) {
+      if (task.data.trim() === '') emptyTasksIds.push(task.id);
+    }
+    for (const emptyTaskId of emptyTasksIds) {
+      setters.handleMainTaskRemove(company.id, emptyTaskId);
+    }
   }
 
   function handleEdit() {
@@ -74,24 +87,29 @@ export default function PracticalExpForm({ company, setters }: Props) {
               id="positionTitle"
             />
             <Label htmlFor="mainTasks">Main tasks</Label>
-            {company.mainTasks.length > 0 && <div></div>}
+            {company.mainTasks.length > 0 && (
+              <div className="hidden sm:block"></div>
+            )}
             {company.mainTasks.map((task) => (
               <MainTask
                 key={task.id}
                 companyId={company.id}
                 setMainTask={setters.setMainTask}
                 handleMainTaskRemove={setters.handleMainTaskRemove}
+                handleMainTaskAdd={setters.handleMainTaskAdd}
                 task={task}
               />
             ))}
-            {company.mainTasks.length > 0 && <div></div>}
             <button
               type="button"
               onClick={() => setters.handleMainTaskAdd(company.id)}
-              className="w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600"
+              className={`w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600 ${
+                company.mainTasks.length === 0 ? 'sm:mx-4' : ''
+              }`}
             >
               + Add{company.mainTasks.length > 0 && ' another'}
             </button>
+            {company.mainTasks.length > 0 && <div></div>}
             <Label htmlFor="startDate">Start date</Label>
             <Input
               required={!!company.finishDate}
@@ -136,13 +154,6 @@ export default function PracticalExpForm({ company, setters }: Props) {
             {company.companyName && (
               <div className="italic">{company.companyName} </div>
             )}
-            {company.mainTasks.length > 0 && (
-              <ul>
-                {company.mainTasks.map((task) => (
-                  <li key={task.id}>{task.data}</li>
-                ))}
-              </ul>
-            )}
             {company.startDate && company.ongoing && (
               <div className="text-sm">Ongoing - {company.startDate}</div>
             )}
@@ -150,6 +161,15 @@ export default function PracticalExpForm({ company, setters }: Props) {
               <div className="text-sm">
                 {company.finishDate} - {company.startDate}
               </div>
+            )}
+            {company.mainTasks.length > 0 && (
+              <ul>
+                {company.mainTasks.map((task) => (
+                  <li key={task.id} className="ml-4 list-disc text-xs">
+                    {task.data}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </>
@@ -165,21 +185,27 @@ export default function PracticalExpForm({ company, setters }: Props) {
             Save
           </button>
         ) : (
+          <>
+            {!isDisplayMode && (
+              <button
+                key={'editPExp' + company.id}
+                onClick={handleEdit}
+                className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
+              >
+                Edit
+              </button>
+            )}
+          </>
+        )}
+        {!isDisplayMode && (
           <button
-            key={'editPExp' + company.id}
-            onClick={handleEdit}
-            className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
+            type="button"
+            onClick={() => setters.handleCompanyRemove(company.id)}
+            className="w-fit rounded bg-gray-700 px-8 py-1 text-red-600 hover:bg-gray-600"
           >
-            Edit
+            ✕ Delete
           </button>
         )}
-        <button
-          type="button"
-          onClick={() => setters.handleCompanyRemove(company.id)}
-          className="w-fit rounded bg-gray-700 px-8 py-1 text-red-600 hover:bg-gray-600"
-        >
-          ✕ Delete
-        </button>
       </div>
     </>
   );

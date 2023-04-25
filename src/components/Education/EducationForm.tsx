@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Checkbox from './base/Checkbox';
-import Input from './base/Input';
-import Label from './base/Label';
+import Checkbox from '../base/Checkbox';
+import Input from '../base/Input';
+import Label from '../base/Label';
 
 interface School {
   id: number;
@@ -24,9 +24,14 @@ interface Setters {
 type Props = {
   school: School;
   setters: Setters;
+  isDisplayMode: boolean;
 };
 
-export default function EducationForm({ school, setters }: Props) {
+export default function EducationForm({
+  school,
+  setters,
+  isDisplayMode,
+}: Props) {
   const [isEdited, setIsEdited] = useState(true);
 
   function handleSave(e: React.FormEvent<HTMLFormElement>) {
@@ -129,20 +134,26 @@ export default function EducationForm({ school, setters }: Props) {
             Save
           </button>
         ) : (
+          <>
+            {!isDisplayMode && (
+              <button
+                key={'editEdu' + school.id}
+                onClick={handleEdit}
+                className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
+              >
+                Edit
+              </button>
+            )}
+          </>
+        )}
+        {!isDisplayMode && (
           <button
-            key={'editEdu' + school.id}
-            onClick={handleEdit}
-            className="w-fit rounded bg-gray-700 px-8 py-1 hover:bg-gray-600"
+            onClick={() => setters.handleSchoolRemove(school.id)}
+            className="w-fit rounded bg-gray-700 px-8 py-1 text-red-600 hover:bg-gray-600"
           >
-            Edit
+            ✕ Delete
           </button>
         )}
-        <button
-          onClick={() => setters.handleSchoolRemove(school.id)}
-          className="w-fit rounded bg-gray-700 px-8 py-1 text-red-600 hover:bg-gray-600"
-        >
-          ✕ Delete
-        </button>
       </div>
     </>
   );

@@ -14,7 +14,7 @@ interface Company {
   ongoing: boolean;
 }
 
-export default function PracticalExp() {
+export default function PracticalExp(props: { isDisplayMode: boolean }) {
   const [currentId, setCurrentId] = useState(1);
   const [companies, setCompanies] = useState<Company[]>([]);
 
@@ -58,6 +58,7 @@ export default function PracticalExp() {
         .mainTasks.push({ id: currentId, data: '' });
       setCurrentId(currentId + 1);
       setCompanies(newCompanies);
+      // FOCUS ON NEW TASk
     },
     setMainTask: (companyId: number, taskId: number, taskData: string) => {
       const newCompanies = [...companies];
@@ -68,9 +69,10 @@ export default function PracticalExp() {
     },
     handleMainTaskRemove: (companyId: number, taskId: number) => {
       const newCompanies = [...companies];
-      newCompanies
-        .find((company) => company.id === companyId)!
-        .mainTasks.filter((task) => task.id !== taskId);
+      const company = newCompanies.find((company) => company.id === companyId)!;
+      company.mainTasks = company.mainTasks.filter(
+        (task) => task.id !== taskId
+      );
       setCompanies(newCompanies);
     },
   };
@@ -91,24 +93,33 @@ export default function PracticalExp() {
     setCurrentId(currentId + 1);
   }
 
+  const shouldDisplay = !props.isDisplayMode || companies.length > 0;
+
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-2xl font-bold underline decoration-cyan-500">
-        Practical experience
-      </h2>
-      {companies.map((company) => (
-        <PracticalExpForm
-          key={company.id}
-          company={company}
-          setters={setters}
-        />
-      ))}
-      <button
-        onClick={handleCompanyAdd}
-        className="w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600"
-      >
-        + Add{companies.length > 0 && ' another'}
-      </button>
-    </section>
+    <>
+      {shouldDisplay && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-2xl font-bold underline decoration-cyan-500">
+            Practical experience
+          </h2>
+          {companies.map((company) => (
+            <PracticalExpForm
+              key={company.id}
+              company={company}
+              setters={setters}
+              isDisplayMode={props.isDisplayMode}
+            />
+          ))}
+          {!props.isDisplayMode && (
+            <button
+              onClick={handleCompanyAdd}
+              className="w-fit rounded bg-gray-700 px-8 py-1 text-cyan-500 hover:bg-gray-600"
+            >
+              + Add{companies.length > 0 && ' another'}
+            </button>
+          )}
+        </section>
+      )}
+    </>
   );
 }
