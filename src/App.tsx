@@ -9,7 +9,6 @@ function App() {
 
   function toggleDisplayMode() {
     setIsDisplayMode(!isDisplayMode);
-    console.log({ isDisplayMode: !isDisplayMode });
   }
 
   return (
