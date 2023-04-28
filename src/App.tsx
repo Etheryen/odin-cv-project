@@ -12,7 +12,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-800 px-[20vw] pb-10 text-white">
+    <div className="flex min-h-screen flex-col items-center bg-gray-800 px-2 pb-10 text-white sm:items-stretch sm:px-[20vw]">
       <Header />
       <div className="flex flex-col gap-10">
         <GeneralInfo isDisplayMode={isDisplayMode} />
